@@ -3,15 +3,15 @@ import './App.css';
 
 class App extends Component {
   state = {
-    name:'ravi',
+    home:'home',
     data:''
   }
   onButtonClick = () =>{
-  fetch("https://facebook-apii.herokuapp.com/signin",{
+  fetch("https://facebook-apii.herokuapp.com/home",{
     method:'post',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
-      name:this.state.name
+      home:this.state.home
      })
   })
   .then(response => response.json())
@@ -29,6 +29,5 @@ class App extends Component {
     );
   }
 }
-
 
 export default App;
