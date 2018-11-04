@@ -14,14 +14,16 @@ class App extends Component {
      })
   })
   .then(response => response.json())
-  .then(console.log)
+  .then(data=>{
+    this.setState({name:data})
+  })
 }
   render() {
     return (
       <div className="App">
-        
         <h1>Front end  deployed.</h1>
         <button onClick={this.onButtonClick}>Fetch</button>
+        <h1>{this.state.data}</h1>
       </div>
     );
   }
