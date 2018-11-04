@@ -4,7 +4,12 @@ import FacebookLogin from 'react-facebook-login'
 export default class Facebook extends Component {
    
     responseFacebook = response => {
-            console.log(response);
+            this.setState({
+                isLogedIn:true,
+                userID:response.userID,
+                name:response.name,
+                picture:response.picture.data.url
+            })
     }
 
     componentClicked = () => {
@@ -22,7 +27,18 @@ export default class Facebook extends Component {
     render() {
         let fbContent;
         if(this.state.isLogedIn) {
-                fbContent = "null"
+            fbContent = (
+                <div style={{
+                    width: '400px',
+                    margin: 'auto',
+                    background: '#f4f4f4',
+                    padding:'20px'
+                }}>
+                    <img src={this.state.picture} alt={this.state.name}/>
+                    <h2>Welcome {this.state.name}</h2>
+                    <p>Email:{this.state.email}</p>
+                </div>
+            );
         } else {
             fbContent = (
                 <FacebookLogin
