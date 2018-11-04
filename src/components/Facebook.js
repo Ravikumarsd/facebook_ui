@@ -8,6 +8,7 @@ export default class Facebook extends Component {
                 isLogedIn:true,
                 userID:response.userID,
                 name:response.name,
+                email:response.email,
                 picture:response.picture.data.url
             })
     }
