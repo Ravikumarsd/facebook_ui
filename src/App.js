@@ -6,7 +6,7 @@ class App extends Component {
     name:'ravi'
   }
   onButtonClick = () =>{
-  fetch("http://localhost:3000/signin",{
+  fetch("https://facebook-apii.herokuapp.com/signin",{
     method:'post',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
