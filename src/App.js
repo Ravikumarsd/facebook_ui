@@ -3,7 +3,8 @@ import './App.css';
 
 class App extends Component {
   state = {
-    name:'ravi'
+    name:'ravi',
+    data:''
   }
   onButtonClick = () =>{
   fetch("https://facebook-apii.herokuapp.com/signin",{
@@ -14,8 +15,8 @@ class App extends Component {
      })
   })
   .then(response => response.json())
-  .then(data=>{
-    this.setState({name:data})
+  .then( data => {
+     this.setState({data:data})
   })
 }
   render() {
