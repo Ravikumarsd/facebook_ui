@@ -24,7 +24,7 @@ onFacebookLogin = (loginStatus, resultObject) => {
         {!username &&  
         <div>
           <FacebookLoginButton 
-                onLogin={()=>this.onFacebookLogin(loginStatus,resultObject)}>
+                onLogin={()=>this.onFacebookLogin}>
             <button>Facebook</button>
           </FacebookLoginButton>
         </div>
