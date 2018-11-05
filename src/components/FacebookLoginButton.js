@@ -14,12 +14,13 @@ export default class FacebookLoginButton extends Component {
 
   initializeFacebookLogin = () => {
     this.FB = window.FB
-    console.log("I am inside initialize facebook login");
+    console.log("I am inside initialize facebookLogin")
     this.checkLoginStatus();
   }
 
   checkLoginStatus =()=>{
     this.FB.getLoginStatus(this.facebookLoginHandler);
+    console.log("I am inside checkloginstatus")
   }
 
   facebookLogin = () => {
@@ -31,7 +32,8 @@ export default class FacebookLoginButton extends Component {
             this.FB.login(this.facebookLoginHandler,{scope: 'public_profile'});
           }
         },);
-  }
+        console.log("I am inside facebookLogin")
+      }
 
   facebookLoginHandler = response => {
     if (response.status === 'connected') {
