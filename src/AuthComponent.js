@@ -9,11 +9,12 @@ export default class AuthComponent extends Component {
                   appId            : '2000847070214153',
                   autoLogAppEvents : true,
                   xfbml            : true,
-                  version          : 'v3.2'
+                  version          : 'v3.2',
+                  frictionlessRequests:true
                 });
 
               Event.subscribe('auth.statusChange',(response) => {
-                  if(response.authResponse) {
+                  if(response) {
                       this.updateLoggedInState(response)
                   } else {
                       this.updateLoggedOutState(response)
@@ -32,7 +33,7 @@ export default class AuthComponent extends Component {
     
         updateLoggedInState = (response) =>{
             console.log("user logged in");
-            console.log(response.authResponse.accessToken);
+            console.log(response);
         }    
         updateLoggedOutState =(response)=>{
             console.log("user loged out");
