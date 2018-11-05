@@ -1,40 +1,46 @@
 import React, { Component } from 'react';
 import './App.css';
-import FacebookLoginButton from './components/FacebookLoginButton'
+import FacebookLoginButton from './FacebookLoginButton';
+
 class App extends Component {
+
   state = {
     username: null
   };
-  buttonClicked = () =>{
-    console.log("Button clicked");
+
+  onFacebookLogin = (loginStatus, resultObject) => {
+    if (loginStatus === true) {
+      this.setState({
+        username: resultObject.user.name
+      });
+    } else {
+      alert('Facebook login error');
+    }
   }
-onFacebookLogin = (loginStatus, resultObject) => {
-  if(loginStatus === true) {
-    this.setState({
-      username: resultObject.user.name
-    });
-  } else {
-    alert('Facebook login error');
-  }
-}
+
   render() {
     const { username } = this.state;
+
     return (
       <div className="App">
-        {!username &&  
-        <div>
-          <FacebookLoginButton 
-                onLogin={()=>this.onFacebookLogin}>
-            <button>Facebook</button>
-          </FacebookLoginButton>
+        <header className="App-header">
+          <h1 className="App-title">React Social Media Login</h1>
+        </header>
+
+        <div className="App-intro">
+          { !username &&
+            <div>
+              <p>Click on one of any button below to login</p>
+              <FacebookLoginButton onLogin={this.onFacebookLogin}>
+                <button>Facebook</button>
+              </FacebookLoginButton>
+            </div>
+          }
+          {username &&
+            <p>Welcome back, {username}</p>
+          }
         </div>
-        }
-        {username &&
-        <div>
-          <p>Welcome back ,{username} </p>
-        </div> 
-        }
-    </div>
+      </div>
     );
   }
 }
