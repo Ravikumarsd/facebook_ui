@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import FacebookLoginButton from './components/FacebookLoginButton'
 class App extends Component {
-  
   state = {
-    username: ''
+    username: null
   };
   buttonClicked = () =>{
     console.log("Button clicked");
@@ -22,17 +21,18 @@ onFacebookLogin = (loginStatus, resultObject) => {
     const { username } = this.state;
     return (
       <div className="App">
-        {(!username.length) ? 
+        {!username &&  
         <div>
           <FacebookLoginButton>
             <button onClick={this.buttonClicked}>Facebook</button>
           </FacebookLoginButton>
         </div>
-        :
+        }
+        {username &&
         <div>
           <p>Welcome back ,{username} </p>
         </div> 
-      }
+        }
     </div>
     );
   }
