@@ -14,6 +14,7 @@ export default class FacebookLoginButton extends Component {
 
   initializeFacebookLogin = () => {
     this.FB = window.FB
+    console.log("I am inside initialize facebook login");
     this.checkLoginStatus();
   }
 

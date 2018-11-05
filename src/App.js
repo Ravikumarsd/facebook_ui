@@ -6,6 +6,9 @@ class App extends Component {
   state = {
     username: ''
   };
+  buttonClicked = () =>{
+    console.log("Button clicked");
+  }
 onFacebookLogin = (loginStatus, resultObject) => {
   if(loginStatus === true) {
     this.setState({
@@ -22,7 +25,7 @@ onFacebookLogin = (loginStatus, resultObject) => {
         {(!username.length) ? 
         <div>
           <FacebookLoginButton>
-            <button>Facebook</button>
+            <button onClick={this.buttonClicked}>Facebook</button>
           </FacebookLoginButton>
         </div>
         :
