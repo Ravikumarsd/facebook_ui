@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import FacebookLoginButton from './FacebookLoginButton';
+import FacebookLoginButton from './components/FacebookLoginButton';
 
 class App extends Component {
 
