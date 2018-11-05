@@ -32,7 +32,7 @@ export default class AuthComponent extends Component {
     
         updateLoggedInState = (response) =>{
             console.log("user logged in");
-            console.log(response);
+            console.log(response.authResponse.accessToken);
         }    
         updateLoggedOutState =(response)=>{
             console.log("user loged out");
