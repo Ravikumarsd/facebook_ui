@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class FacebookLogin extends Component {
+export default class FacebookLoginButton extends Component {
 
   componentDidMount() {
     document.addEventListener('FBObjectReady', this.initializeFacebookLogin);
