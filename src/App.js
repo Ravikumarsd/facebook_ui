@@ -27,8 +27,9 @@ class App extends Component {
         { !username &&
           <div>
             <p>Click on one of any button below to login</p>
-            <FacebookLoginButton onLogin={this.onFacebookLogin}>
-              <button>Facebook</button>
+            <FacebookLoginButton 
+              onLogin={this.onFacebookLogin}>
+              <button onClick={this.onFacebookLogin}>Facebook</button>
             </FacebookLoginButton>
           </div>
         }
