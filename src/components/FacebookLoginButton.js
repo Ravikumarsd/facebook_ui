@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 export default class FacebookLoginButton extends Component {
   componentDidMount() {
     document.addEventListener('FBObjectReady', this.initializeFacebookLogin);
+    console.log(window.FB.getLoginStatus)
   }
 
   componentWillUnmount() {
