@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { FacebookLoginButton } from 'react-social-login-buttons';
+import Button from './Button';
 
 export default class AuthComponent extends Component {
   state = {
-    status: ''
+    status: '',
   }
   componentDidMount() {
     document.addEventListener('FBObjectReady', this.initialiseLogin)
@@ -13,37 +13,55 @@ export default class AuthComponent extends Component {
   }
 
   initialiseLogin = () => {
-    const {getLoginStatus,Event} = window.FB;
-          getLoginStatus(response => this.statusChangeCallback(response));
-          Event.subscribe('auth.login', this.loginEvent);
-          Event.subscribe('auth.logout', this.logoutEvent);
+    const {getLoginStatus,Event} = window.FB
+          getLoginStatus(response => this.statusChangeCallback(response))
+          Event.subscribe('auth.login', this.loginEvent)
+          Event.subscribe('auth.logout', this.logoutEvent)
   }
 
-  statusChangeCallback = response => { console.log(response); this.setState({ status: response.status }) }
-  loginEvent = response => this.statusChangeCallback(response);
-  logoutEvent = response => this.statusChangeCallback(response);
+  statusChangeCallback = response => 
+  {
+    if(response.status === 'connected') {
+      this.testAPI();
+    }
+    this.setState({ status: response.status })
 
+  }
+
+  testAPI = () =>{
+      window.FB.api('/me/accounts/',
+      'GET',
+       {"fields":"name,access_token,id"},
+       response=>{
+        if(response && !response.error) {
+            let data = [...response.data]
+            let names = data.map( data => data.name)
+            
+            let tokens = data.map(data => data.access_token)
+            
+            let ids = data.map(data => data.id)
+            
+            names.map(name => console.log(name))
+            tokens.map(token => console.log(token))
+            ids.map(id=>console.log(id))
+          
+          }
+      })
+  }
+  loginEvent = response => this.statusChangeCallback(response)
+  logoutEvent = response => this.statusChangeCallback(response)
   render() {
     const {status} = this.state;
     return (
-      <div>
-        {status}
-        {(status === 'connected') ?
-        <FacebookLoginButton
-          onClick={() => window.FB.logout()}
-          activeStyle={{ background: 'rgb(59,91,150)' }}
-          style={{background: 'rgb(42,144,237)' }}>
-          <span>Logout</span>
-        </FacebookLoginButton>
-      :
-        <FacebookLoginButton
-          onClick={() => window.FB.login()}
-          activeStyle={{ background: 'rgb(59,91,150)' }}
-          style={{ background: 'rgb(42,144,237)' }}>
-          <span>Continue with facebook</span>
-        </FacebookLoginButton>
-      }
-      </div>
+      <div>        
+      {(status === 'connected') ?
+        <Button value={"Logout"} click={()=>window.FB.logout()}/>
+       :<Button value={"Continue with Facebook"} click={()=>window.FB.login()}/>
+       }
+       <h1>{status}</h1>
+
+       <p></p>
+        </div>
     )
   }
 }
