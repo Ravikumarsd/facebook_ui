@@ -1,0 +1,11 @@
+.page{
+    display: flex;
+    justify-content: space-between
+}
+.name{
+    margin-top: 15px;
+    width: 200px;
+}
+.avatar {
+    
+}

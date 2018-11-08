@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import Button from './Button';
-
+import Page from './Page';
+import CreatePage from './CreatePage';
+import {Panel} from 'react-bootstrap'
 export default class AuthComponent extends Component {
   state = {
     status: '',
+    data:[]
   }
   componentDidMount() {
     document.addEventListener('FBObjectReady', this.initialiseLogin)
@@ -25,42 +28,52 @@ export default class AuthComponent extends Component {
       this.testAPI();
     }
     this.setState({ status: response.status })
-
+    console.log(this.state.status);
   }
+  
+  loginEvent = response => this.statusChangeCallback(response)
+  logoutEvent = response => this.statusChangeCallback(response)
 
-  testAPI = () =>{
+  testAPI = () => {
       window.FB.api('/me/accounts/',
       'GET',
-       {"fields":"name,access_token,id"},
-       response=>{
+       {"fields":"name,access_token,id,picture{url}"},
+       response => {
         if(response && !response.error) {
-            let data = [...response.data]
-            let names = data.map( data => data.name)
-            
-            let tokens = data.map(data => data.access_token)
-            
-            let ids = data.map(data => data.id)
-            
-            names.map(name => console.log(name))
-            tokens.map(token => console.log(token))
-            ids.map(id=>console.log(id))
-          
+           console.log(response)
+           let data = [...response.data]
+           this.setState({data})
           }
       })
   }
-  loginEvent = response => this.statusChangeCallback(response)
-  logoutEvent = response => this.statusChangeCallback(response)
+
   render() {
-    const {status} = this.state;
+    const {data,status} = this.state;
+    let name = data.map(data => 
+          <Page
+            key={data.id}
+            name={data.name}
+            picture={data.picture.data.url}  
+          />
+      )
     return (
       <div>        
       {(status === 'connected') ?
         <Button value={"Logout"} click={()=>window.FB.logout()}/>
        :<Button value={"Continue with Facebook"} click={()=>window.FB.login()}/>
        }
-       <h1>{status}</h1>
-       <p></p>
-        </div>
+    
+       {(status === 'connected')?
+        <div style={{marginTop:'10px'}}>
+         <Panel>
+            <Panel.Body><CreatePage/></Panel.Body>
+              <Panel.Footer style={{backgroundColor:'white'}}>
+              {name}
+              </Panel.Footer>
+          </Panel>
+        </div>:null
+      }
+      </div>
     )
   }
 }
