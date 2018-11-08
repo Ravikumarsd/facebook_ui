@@ -59,7 +59,6 @@ export default class AuthComponent extends Component {
        :<Button value={"Continue with Facebook"} click={()=>window.FB.login()}/>
        }
        <h1>{status}</h1>
-
        <p></p>
         </div>
     )

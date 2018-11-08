@@ -9,7 +9,6 @@ import { FacebookLoginButton } from 'react-social-login-buttons';
           style={{ background: 'rgb(42,144,237)' }}>
           <span>{value}</span>
         </FacebookLoginButton>
-
   )
 }
 
