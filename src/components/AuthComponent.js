@@ -3,6 +3,8 @@ import Button from './Button';
 import Page from './Page';
 import CreatePage from './CreatePage';
 import {Panel} from 'react-bootstrap'
+
+//538715949931003 appid
 export default class AuthComponent extends Component {
   state = {
     status: '',
@@ -33,11 +35,20 @@ export default class AuthComponent extends Component {
   
   loginEvent = response => this.statusChangeCallback(response)
   logoutEvent = response => this.statusChangeCallback(response)
-
+  testSubscription=()=>{
+    window.FB.api('/259309364937810/subscribed_apps',
+    'POST',
+    {subscribed_fields:'name'},
+    {access_token:"EAAHp9ZATUmfsBABL3uvKlRqxOdV0Tou6bbZBvz4hqiZCh4nbKjxfDf6hoD5feHqhTm4OhwZAXsSom1FVyAKfbh3ZCfgsxvK4m33kiovwvpbC8DfIegtlA9uForsbQkNSUMPAL8EdKRZA7LfKDDvZBpzhy6nJMx4F58I19sXZCyX6ldCIMzSrZC5YzaZAkMmtSCWeGRUhFAMzO8CwZDZD"},
+      response => {
+       console.log(response)
+      }
+    )
+}
   testAPI = () => {
       window.FB.api('/me/accounts/',
       'GET',
-       {"fields":"name,access_token,id,picture{url}"},
+       {fields:"name,access_token,id,picture{url},is_webhooks_subscribed"},
        response => {
         if(response && !response.error) {
            console.log(response)
@@ -58,6 +69,7 @@ export default class AuthComponent extends Component {
       )
     return (
       <div>        
+
       {(status === 'connected') ?
         <Button value={"Logout"} click={()=>window.FB.logout()}/>
        :<Button value={"Continue with Facebook"} click={()=>window.FB.login()}/>
@@ -73,6 +85,8 @@ export default class AuthComponent extends Component {
           </Panel>
         </div>:null
       }
+
+      <button onClick={this.testSubscription}>subscribe</button>
       </div>
     )
   }

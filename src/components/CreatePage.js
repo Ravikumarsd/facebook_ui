@@ -10,7 +10,7 @@ import './CreatePage.css';
                  <p style={{fontSize:'20px'}}>Bot Publishing</p>
                 </div>
                  <div className='button'>
-                    <a href='https://www.facebook.com/pages/creation/'><Button
+                    <a href='https://www.facebook.com/pages/creation/' target='_blank'><Button
                     >
                         CREATE A FACEBOOK PAGE
                     </Button></a>
