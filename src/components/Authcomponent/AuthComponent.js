@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import Button from './Button';
-import Page from './Page';
-import CreatePage from './CreatePage';
+import Button from '../Button/Button';
+import Page from '../Page/Page';
+import CreatePage from '../Createpage/CreatePage';
 import {Panel} from 'react-bootstrap'
 
 //538715949931003 appid
 export default class AuthComponent extends Component {
   state = {
     status: '',
-    data:[]
+    data:[],
+    access_token:[]
   }
+
   componentDidMount() {
     document.addEventListener('FBObjectReady', this.initialiseLogin)
   }
@@ -20,14 +22,14 @@ export default class AuthComponent extends Component {
   initialiseLogin = () => {
     const {getLoginStatus,Event} = window.FB
           getLoginStatus(response => this.statusChangeCallback(response))
-          Event.subscribe('auth.login', this.loginEvent)
+          Event.subscribe('auth.login',  this.loginEvent)
           Event.subscribe('auth.logout', this.logoutEvent)
   }
 
   statusChangeCallback = response => 
   {
     if(response.status === 'connected') {
-      this.testAPI();
+      this.getPageDetails();
     }
     this.setState({ status: response.status })
     console.log(this.state.status);
@@ -35,26 +37,35 @@ export default class AuthComponent extends Component {
   
   loginEvent = response => this.statusChangeCallback(response)
   logoutEvent = response => this.statusChangeCallback(response)
-  testSubscription=()=>{
-    window.FB.api('/259309364937810/subscribed_apps',
-    'POST',
-    {subscribed_fields:'name'},
-    {access_token:"EAAHp9ZATUmfsBABL3uvKlRqxOdV0Tou6bbZBvz4hqiZCh4nbKjxfDf6hoD5feHqhTm4OhwZAXsSom1FVyAKfbh3ZCfgsxvK4m33kiovwvpbC8DfIegtlA9uForsbQkNSUMPAL8EdKRZA7LfKDDvZBpzhy6nJMx4F58I19sXZCyX6ldCIMzSrZC5YzaZAkMmtSCWeGRUhFAMzO8CwZDZD"},
-      response => {
-       console.log(response)
-      }
-    )
-}
-  testAPI = () => {
+  
+ 
+  //getting page details
+  getPageDetails = () => {
       window.FB.api('/me/accounts/',
       'GET',
-       {fields:"name,access_token,id,picture{url},is_webhooks_subscribed"},
+       {fields:"name,access_token,id,picture{url}"},
        response => {
         if(response && !response.error) {
-           console.log(response)
+           //console.log(response)
            let data = [...response.data]
            this.setState({data})
-          }
+           let access_token = []
+           
+           data.map(data => access_token.push(data.access_token))
+           let token=[...access_token]
+           this.setState({access_token:token})
+
+           //send access_tokens to backend
+           fetch('https://facebook-apii.herokuapp.com/access_token',{
+             method:'POST',
+             headers:{'Content-Type':'application/json'},
+             body:JSON.stringify({
+              access_token:this.state.access_token
+             })
+           })
+           .then(response=>response.json())
+           .then(console.log)
+        }
       })
   }
 
@@ -64,7 +75,9 @@ export default class AuthComponent extends Component {
           <Page
             key={data.id}
             name={data.name}
-            picture={data.picture.data.url}  
+            picture={data.picture.data.url}
+            id={data.id}
+            token={data.access_token}  
           />
       )
     return (
@@ -78,15 +91,15 @@ export default class AuthComponent extends Component {
        {(status === 'connected')?
         <div style={{marginTop:'10px'}}>
          <Panel>
-            <Panel.Body><CreatePage/></Panel.Body>
-              <Panel.Footer style={{backgroundColor:'white'}}>
-              {name}
-              </Panel.Footer>
+            <Panel.Body>
+                <CreatePage/>
+            </Panel.Body>
+            <Panel.Footer style={{backgroundColor:'white'}}>
+                  {name}
+            </Panel.Footer>
           </Panel>
         </div>:null
       }
-
-      <button onClick={this.testSubscription}>subscribe</button>
       </div>
     )
   }
