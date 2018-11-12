@@ -1,7 +1,7 @@
 import React from 'react'
 import { FacebookLoginButton } from 'react-social-login-buttons';
-import './Button.css'
-const Button=({value,click})=> {
+import './FacebookButton.css'
+const FacebookButton=({value,click})=> {
   return (
     <div className="fbbutton">
         <FacebookLoginButton
@@ -14,4 +14,4 @@ const Button=({value,click})=> {
   )
 }
 
-export default Button;
+export default FacebookButton;

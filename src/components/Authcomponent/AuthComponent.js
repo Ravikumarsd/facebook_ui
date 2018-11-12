@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
-import Button from '../Button/Button';
+import FacebookButton from '../FacebookButton/FacebookButton';
 import Page from '../Page/Page';
 import CreatePage from '../Createpage/CreatePage';
-import {Panel} from 'react-bootstrap'
+import {ListGroup} from 'reactstrap';
+import MessengerButton from '../MessengerButton/MessengerButton';
 
 //538715949931003 appid
 export default class AuthComponent extends Component {
   state = {
     status: '',
     data:[],
-    access_token:[]
+    access_token:[],
+    subscribedPageID:'',
+    picture:'',
+    subscribedPageName:'',
+    isSubscribed:false,
+
   }
 
   componentDidMount() {
@@ -17,6 +23,11 @@ export default class AuthComponent extends Component {
   }
   componentWillUnmount() {
     document.removeEventListener('FBObjectReady', this.initialiseLogin)
+  }
+
+  getSubscribedPageId = (subscribedPageID,picture,subscribedPageName) => {
+    this.setState({subscribedPageID,picture,subscribedPageName})
+    
   }
 
   initialiseLogin = () => {
@@ -51,6 +62,8 @@ export default class AuthComponent extends Component {
            this.setState({data})
            let access_token = []
            
+           console.log(data)
+
            data.map(data => access_token.push(data.access_token))
            let token=[...access_token]
            this.setState({access_token:token})
@@ -68,11 +81,15 @@ export default class AuthComponent extends Component {
         }
       })
   }
-
+  
+onClick=()=>{
+  //console.log(this.state.isSubscribed)
+}
   render() {
-    const {data,status} = this.state;
+    const {data,status,subscribedPageID,isSubscribed,subscribedPageName,picture,token} = this.state;
     let name = data.map(data => 
           <Page
+            pageid={this.getSubscribedPageId.bind(this)}
             key={data.id}
             name={data.name}
             picture={data.picture.data.url}
@@ -80,24 +97,24 @@ export default class AuthComponent extends Component {
             token={data.access_token}  
           />
       )
-    return (
-      <div>        
 
+    return (
+      <div> 
+        {(status === 'connected')?
+        <div style={{display:'flex',justifyContent:'flex-end',marginBottom:'20px'}}>       
+          <MessengerButton subscribedPageID={subscribedPageID}/>
+        </div>:null
+        }
       {(status === 'connected') ?
-        <Button value={"Logout"} click={()=>window.FB.logout()}/>
-       :<Button value={"Continue with Facebook"} click={()=>window.FB.login()}/>
+        <FacebookButton value={"Logout"} click={()=>window.FB.logout()}/>
+       :<FacebookButton value={"Continue with Facebook"} click={()=>window.FB.login()}/>
        }
-    
        {(status === 'connected')?
         <div style={{marginTop:'10px'}}>
-         <Panel>
-            <Panel.Body>
-                <CreatePage/>
-            </Panel.Body>
-            <Panel.Footer style={{backgroundColor:'white'}}>
-                  {name}
-            </Panel.Footer>
-          </Panel>
+              <ListGroup flush>
+                  <CreatePage/>
+                   {name}   
+              </ListGroup>
         </div>:null
       }
       </div>

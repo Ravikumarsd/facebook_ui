@@ -1,11 +1,19 @@
-.page{
+.page {
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    position: relative;
 }
-.name{
+.name {
+    position: absolute;
     margin-top: 15px;
-    width: 200px;
+    top: -10%;
+    left:12%;
 }
-.avatar {
-    
+
+.link {
+    color: #000000
+}
+.link:hover {
+    text-decoration: unset;
+    color: rgb(42, 143, 237)
 }

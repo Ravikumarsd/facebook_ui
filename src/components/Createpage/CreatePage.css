@@ -1,4 +1,11 @@
 .createpage {
     display: flex;
+    margin-top: 10px;
     justify-content: space-between
+}
+
+.cbtn {
+    position: absolute;
+    right: 4%;
+    bottom: 40%
 }
