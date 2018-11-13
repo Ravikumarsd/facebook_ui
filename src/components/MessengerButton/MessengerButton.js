@@ -17,6 +17,7 @@ const MessengerButton = ({subscribedPageID}) => {
               <a
               style={{color:'white'}} 
               href={`https://m.me/${subscribedPageID}`}
+              target='_blank'
               rel="noopener noreferrer"
               ><p style={{fontSize:'10px',marginLeft:'15px'}}>TEST THIS CHATBOT</p></a>
             </div>

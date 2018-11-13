@@ -5,17 +5,12 @@ import CreatePage from '../Createpage/CreatePage';
 import {ListGroup} from 'reactstrap';
 import MessengerButton from '../MessengerButton/MessengerButton';
 
-//538715949931003 appid
 export default class AuthComponent extends Component {
   state = {
     status: '',
     data:[],
     access_token:[],
-    subscribedPageID:'',
-    picture:'',
-    subscribedPageName:'',
     isSubscribed:false,
-
   }
 
   componentDidMount() {
@@ -25,9 +20,8 @@ export default class AuthComponent extends Component {
     document.removeEventListener('FBObjectReady', this.initialiseLogin)
   }
 
-  getSubscribedPageId = (subscribedPageID,picture,subscribedPageName) => {
-    this.setState({subscribedPageID,picture,subscribedPageName})
-    
+  getSubscribedPageId = (subscribedPageID) => {
+    this.setState({subscribedPageID})
   }
 
   initialiseLogin = () => {
@@ -43,7 +37,7 @@ export default class AuthComponent extends Component {
       this.getPageDetails();
     }
     this.setState({ status: response.status })
-    console.log(this.state.status);
+        console.log(this.state.status);
   }
   
   loginEvent = response => this.statusChangeCallback(response)
@@ -61,7 +55,7 @@ export default class AuthComponent extends Component {
            let data = [...response.data]
            this.setState({data})
            let access_token = []
-           
+          
            console.log(data)
 
            data.map(data => access_token.push(data.access_token))
@@ -82,12 +76,11 @@ export default class AuthComponent extends Component {
       })
   }
   
-onClick=()=>{
-  //console.log(this.state.isSubscribed)
-}
+
   render() {
-    const {data,status,subscribedPageID,isSubscribed,subscribedPageName,picture,token} = this.state;
-    let name = data.map(data => 
+    const {data,status,subscribedPageID,} = this.state;
+   
+    let pageDetails = data.map(data => 
           <Page
             pageid={this.getSubscribedPageId.bind(this)}
             key={data.id}
@@ -113,7 +106,7 @@ onClick=()=>{
         <div style={{marginTop:'10px'}}>
               <ListGroup flush>
                   <CreatePage/>
-                   {name}   
+                   {pageDetails}   
               </ListGroup>
         </div>:null
       }
